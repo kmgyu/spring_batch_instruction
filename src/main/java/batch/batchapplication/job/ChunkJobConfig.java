@@ -36,7 +36,7 @@ public class ChunkJobConfig {
                          ItemProcessor<String, String> processor,
                          ItemWriter<String> writer) {
     return new StepBuilder("importStep", jobRepository)
-            .<String, String>chunk(100, tx) // 트랜잭션은 청크 단위 커밋
+            .<String, String>chunk(100, tx) // 청크 단위 커밋
             .reader(reader)
             .processor(processor)
             .writer(writer)
