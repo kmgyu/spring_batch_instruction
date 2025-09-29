@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Goorm Board</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="max-w-7xl mx-auto px-4 py-12 text-center">
+        <h1 class="text-4xl font-bold mb-6">Goorm Board에 오신 것을 환영합니다!</h1>
+        <p class="text-xl text-gray-600 mb-8">로그인 목업입니다.</p>
+        <div class="space-x-4">
+            <a th:href="@{/}" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-lg font-medium">
+                게시판 보러가기 같은 것은 없습니다.
+            </a>
+            <a th:href="@{/}" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 text-lg font-medium">
+                카테고리 관리 같은 것은 없습니다.
+            </a>
+        </div>
+    </section>
+</div>
+</body>
+</html>
