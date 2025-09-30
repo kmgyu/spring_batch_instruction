@@ -20,16 +20,18 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/", "/posts", "/auth/signup", "/auth/login",
+                            .requestMatchers("/", "/posts", "/error",
                                     "/static/**", "/css/**", "/js/**", "/images/**", "/favicon.*").permitAll()  // 정적 리소스 접근 허용
-//                        .requestMatchers("/", "/posts", "/auth/signup", "/auth/login", "/favicon.ico").permitAll()
+                        .requestMatchers("/", "/posts", "/auth/signup", "/favicon.ico").permitAll()
 //                            .requestMatchers("/posts/[0-9]+").permitAll()  // regex로 숫자로 된 게시글 조회만 허용
                             .requestMatchers("/**").authenticated()
-                            .anyRequest().authenticated()
+//                            .anyRequest().authenticated()
             )
             .formLogin(form -> form
                     .loginPage("/auth/login")
+//                    .loginProcessingUrl("/auth/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .defaultSuccessUrl("/", true)  // true로 설정하여 강제 리다이렉트

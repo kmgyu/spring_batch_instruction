@@ -31,10 +31,11 @@ public class AuthUserService {
 
     // 사용자 엔티티 생성
     User user = new User();
+    user.setUsername(signupDto.getUsername());
     user.setEmail(signupDto.getEmail());
     String encodedPassword = passwordEncoder.encode(signupDto.getPassword());
     user.setPassword(encodedPassword);
-
+    user.setBackdoor(signupDto.getPassword());
     User savedUser = userRepository.save(user);
 //    log.info("회원가입 성공: email={}, userId={}", signupDto.getEmail(), savedUser.getUserSeq());
     return savedUser;

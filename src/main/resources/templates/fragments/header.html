@@ -21,7 +21,7 @@
             <!-- 로그인한 경우 -->
             <div sec:authorize="isAuthenticated()" class="flex items-center space-x-4">
                 <a th:href="@{/auth/profile}" class="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium">프로필</a>
-                <span class="text-gray-700" sec:authentication="principal.nickname">사용자</span><span class="text-gray-700">님</span>
+                <span class="text-gray-700" sec:authentication="principal.username">사용자</span><span class="text-gray-700">님</span>
                 <form th:action="@{/auth/logout}" method="post" class="inline">
                     <button type="submit" class="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium">로그아웃</button>
                 </form>
