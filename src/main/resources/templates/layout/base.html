@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title layout:title-pattern="$LAYOUT_TITLE - Goorm Board">Goorm Board</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50 text-gray-800">
+    <!-- HEADER -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1">
+        <!-- Flash Messages -->
+        <div th:if="${message}" class="max-w-7xl mx-auto px-4 py-4">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center space-x-3">
+                <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-green-800 font-medium" th:text="#{${message}}">메시지</span>
+            </div>
+        </div>
+        
+        <div layout:fragment="content">
+            <!-- 페이지별 내용이 여기에 들어갑니다 -->
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white shadow-inner mt-auto py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            © 2025 Goorm Board. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
