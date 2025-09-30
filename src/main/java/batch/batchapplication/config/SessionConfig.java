@@ -1,5 +1,6 @@
 package batch.batchapplication.config;
 
+import batch.batchapplication.auth.domain.User;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -29,11 +30,50 @@ public class SessionConfig {
    * 기본적ㅇ느로 java serializalizer를 사용하나 다른 어플리케이션과의 호환성을 위해 이것이 권장된다고 합니다.
    */
   // Java 직렬화 사용
+//  @Bean
+//  public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
+//    // Jackson JSON 직렬화 대신, Spring Data Redis의 기본 직렬화(Java Serialization)를 사용합니다.
+//    return new JdkSerializationRedisSerializer();
+//  }
+
+//  지피티의 제안
+
   @Bean
-  public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-    // Jackson JSON 직렬화 대신, Spring Data Redis의 기본 직렬화(Java Serialization)를 사용합니다.
-    return new JdkSerializationRedisSerializer();
+  public RedisSerializer<Object> springSessionDefaultRedisSerializer(ObjectMapper mapper) {
+    // 1) Spring Security 모듈 등록 (Authentication, GrantedAuthority 등 직렬화 지원)
+    mapper.registerModules(
+            org.springframework.security.jackson2.SecurityJackson2Modules.getModules(getClass().getClassLoader())
+    );
+
+    // 2) principal로 들어갈 '네 엔티티'를 allowlist에 추가 (서브타입 등록)
+    mapper.registerSubtypes(
+            new com.fasterxml.jackson.databind.jsontype.NamedType(
+                    batch.batchapplication.auth.domain.User.class,
+                    "batch.batchapplication.auth.domain.User"
+            )
+    );
+
+    // 3) 필요 시 Mixin으로 타입정보 힌트 (principal이 Object로 취급되므로)
+    mapper.addMixIn(batch.batchapplication.auth.domain.User.class, PrincipalTypeHint.class);
+
+    // 기본 모듈(Jdk8/JavaTime 등)은 부트가 이미 넣어준 mapper에 있음
+    return new GenericJackson2JsonRedisSerializer(mapper);
   }
+
+  // principal 엔티티에 직접 애노테이션을 못 붙인다면 Mixin으로 타입 정보를 부여
+  abstract static class PrincipalTypeHint {
+    @com.fasterxml.jackson.annotation.JsonTypeInfo(
+            use = com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS,
+            include = com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY,
+            property = "@class"
+    )
+    // 필드가 아니라 타입 레벨 힌트만 주면 됨 (빈 클래스)
+    static class Mix {}
+  }
+
+
+
+//  제미나이의 제안
 
 //  @Bean
 //  public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
