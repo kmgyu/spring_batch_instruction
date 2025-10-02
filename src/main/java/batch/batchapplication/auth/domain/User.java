@@ -1,6 +1,5 @@
 package batch.batchapplication.auth.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +35,6 @@ public class User implements UserDetails {
   String backdoor;
 
   @Override
-  @JsonIgnore
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of();
   }
