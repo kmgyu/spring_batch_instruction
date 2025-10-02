@@ -18,9 +18,10 @@ import java.time.Duration;
 
 /**
  * 세션 저장소에 대한 관심사이기 때문에 SecurityConfig와 분리됩니다.
+ * 현재 비활성화
  */
-@Configuration
-@EnableRedisHttpSession
+//@Configuration
+//@EnableRedisHttpSession
 public class SessionConfig {
 
   /**
@@ -44,7 +45,7 @@ public class SessionConfig {
             SecurityJackson2Modules.getModules(getClass().getClassLoader())
     );
 
-    // 2) principal로 들어갈 '네 엔티티'를 allowlist에 추가 (서브타입 등록)
+    // 2) principal로 들어갈 엔티티를 allowlist에 추가 (서브타입 등록)
     mapper.registerSubtypes(
             new NamedType(
                     User.class,
