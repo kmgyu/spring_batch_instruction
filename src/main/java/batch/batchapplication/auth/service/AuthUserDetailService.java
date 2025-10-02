@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 @Slf4j
 public class AuthUserDetailService implements UserDetailsService {
