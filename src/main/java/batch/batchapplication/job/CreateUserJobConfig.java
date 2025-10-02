@@ -13,6 +13,7 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -25,10 +26,11 @@ public class CreateUserJobConfig {
   private final JobRepository jobRepository;
   private final PlatformTransactionManager transactionManager;
   private final EntityManagerFactory entityManagerFactory;
+  private final PasswordEncoder passwordEncoder;
 
   @Bean
-  public Job userJob() {
-    return new JobBuilder("userJob", jobRepository)
+  public Job userCreateJob() {
+    return new JobBuilder("userCreateJob", jobRepository)
             .start(userStep())
             .build();
   }
@@ -56,7 +58,7 @@ public class CreateUserJobConfig {
         if (count++ < TOTAL_COUNT) {
           return User.builder()
                   .username("user" + count.toString()) // just for an easy way to login
-                  .password(count.toString())
+                  .password(passwordEncoder.encode(count.toString()))
                   .backdoor(count.toString())
                   .build();
         }
