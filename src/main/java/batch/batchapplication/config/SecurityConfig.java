@@ -21,13 +21,15 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+//            .userDetailsService()  // userDetailService를 직접 주입해줄 수 있다.
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/", "/posts", "/error",
                                     "/static/**", "/css/**", "/js/**", "/images/**", "/favicon.*").permitAll()  // 정적 리소스 접근 허용
                         .requestMatchers("/", "/posts", "/auth/signup", "/favicon.ico").permitAll()
 //                            .requestMatchers("/posts/[0-9]+").permitAll()  // regex로 숫자로 된 게시글 조회만 허용
-                            .requestMatchers("/**").authenticated()
+                            .requestMatchers("/**").permitAll()
+//                            .requestMatchers("/**").authenticated()
 //                            .anyRequest().authenticated()
             )
             .formLogin(form -> form
