@@ -19,6 +19,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x gradlew
+
       - name: Build JAR with Gradle
         run: ./gradlew bootJar
 
@@ -28,11 +31,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set safe image tag
+        id: vars
+        run: |
+          SAFE_TAG=$(echo "${GITHUB_REF_NAME}" | tr '/' '-')
+          echo "SAFE_TAG=$SAFE_TAG" >> $GITHUB_OUTPUT
+
       - name: Build and Push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/myapp:${{ steps.vars.outputs.SAFE_TAG }}
             ${{ secrets.DOCKER_USERNAME }}/myapp:latest
