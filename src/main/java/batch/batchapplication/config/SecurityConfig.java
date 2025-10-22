@@ -28,8 +28,8 @@ public class SecurityConfig {
                                     "/static/**", "/css/**", "/js/**", "/images/**", "/favicon.*").permitAll()  // 정적 리소스 접근 허용
                         .requestMatchers("/", "/posts", "/auth/signup", "/favicon.ico").permitAll()
 //                            .requestMatchers("/posts/[0-9]+").permitAll()  // regex로 숫자로 된 게시글 조회만 허용
-                            .requestMatchers("/**").permitAll()
-//                            .requestMatchers("/**").authenticated()
+                            .requestMatchers("/actuator/**").permitAll()
+                            .requestMatchers("/**").authenticated()
 //                            .anyRequest().authenticated()
             )
             .formLogin(form -> form
