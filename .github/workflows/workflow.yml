@@ -61,7 +61,7 @@ jobs:
           LB_HOST: ${{ secrets.LB_HOST }}
           API1_PRIVATE_IP: ${{ secrets.API1_PRIVATE_IP }}
           API2_PRIVATE_IP: ${{ secrets.API2_PRIVATE_IP }}
-          DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-backend:latest
+          DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/spring_batch_instruction:${{ steps.vars.outputs.SAFE_TAG }}
         run: |
           echo "$PRIVATE_KEY" > key.pem
           chmod 600 key.pem
