@@ -73,13 +73,12 @@ jobs:
             # 내부 서버에 SSH 접속하여 Docker pull & restart
             for SERVER in $API1_PRIVATE_IP $API2_PRIVATE_IP; do
               echo "Deploying to \$SERVER ..."
-              ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@\$SERVER << EOINNER
-                docker stop backend || true
-                docker rm backend || true
-                docker pull $DOCKER_IMAGE
-                docker run -d --name backend -p 8080:8080 $DOCKER_IMAGE
-                echo "Deployment complete on \$SERVER"
-              EOINNER
+              ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@\$SERVER \
+              "docker stop backend || true && \
+                 docker rm backend || true && \
+                 docker pull $DOCKER_IMAGE && \
+                 docker run -d --name backend -p 8080:8080 $DOCKER_IMAGE && \
+                 echo 'Deployment complete on \$SERVER'"
             done
 
             echo "✅ All deployments completed!"
