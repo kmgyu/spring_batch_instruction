@@ -74,10 +74,10 @@ jobs:
             for SERVER in $API1_PRIVATE_IP $API2_PRIVATE_IP; do
               echo "Deploying to \$SERVER ..."
               ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@\$SERVER \
-              "docker stop backend || true && \
-                 docker rm backend || true && \
-                 docker pull $DOCKER_IMAGE && \
-                 docker run -d --name backend -p 8080:8080 $DOCKER_IMAGE && \
+              "  sudo docker stop backend || true && \
+                 sudo docker rm backend || true && \
+                 sudo docker pull $DOCKER_IMAGE && \
+                 sudo docker run -d --name backend -p 8080:8080 $DOCKER_IMAGE && \
                  echo 'Deployment complete on \$SERVER'"
             done
 
