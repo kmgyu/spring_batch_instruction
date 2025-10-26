@@ -1,6 +1,8 @@
 package batch.batchapplication.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
@@ -10,21 +12,24 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
+@RequiredArgsConstructor
 @Configuration
+@ConfigurationProperties(prefix = "redis.cluster")
 public class RedisConfig {
-  @Value("${redis.cluster.nodes}")
-  private String clusterNodes;  // "ip1:port,ip2:port,ip3:port"
+  private String nodes;  // "ip1:port,ip2:port,ip3:port"
+  private int maxRedirects;
 
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
     // 1) 콤마로 분리해서 각 노드를 리스트로 변환
-    List<String> nodeList = Arrays.stream(clusterNodes.split(","))
+    List<String> nodeList = Arrays.stream(nodes.split(","))
             .map(String::trim)
             .toList();
 
     // 2) Redis 클러스터 설정 생성
     RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration(nodeList);
-    clusterConfig.setMaxRedirects(3);
+    clusterConfig.setMaxRedirects(maxRedirects);
 
     // 3) 커넥션 팩토리 반환
     return new LettuceConnectionFactory(clusterConfig);
