@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
   private final BoardRepository boardRepository;
 
+  @Cacheable("board")
   public BoardResponseDTO findById(Long id) {
     Board board = boardRepository.findById(id).orElse(null);
 
