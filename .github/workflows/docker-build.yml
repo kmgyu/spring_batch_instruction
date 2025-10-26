@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ scenario/* ]
+    branches: [ scenario/** ]
   workflow_dispatch:
 
 jobs:
