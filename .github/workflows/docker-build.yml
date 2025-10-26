@@ -44,4 +44,3 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/spring_batch_instruction:${{ steps.vars.outputs.SAFE_TAG }}
-            ${{ secrets.DOCKER_USERNAME }}/spring_batch_instruction:latest
