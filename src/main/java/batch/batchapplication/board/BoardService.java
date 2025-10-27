@@ -16,6 +16,12 @@ public class BoardService {
 
   @Cacheable("board")
   public BoardResponseDTO findById(Long id) {
+    try {
+      Thread.sleep(20); // 20ms 대기
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+
     Board board = boardRepository.findById(id).orElse(null);
 
     if  (board == null) {
