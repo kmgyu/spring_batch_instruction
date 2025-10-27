@@ -21,16 +21,28 @@ import java.util.UUID;
 public class JobTriggerController {
 
   private final JobLauncher jobLauncher;
-  private final Job importUserJob;
+  private final Job boardCreateJob;
+//  private final Job importUserJob;
 
-  @PostMapping("/run/import")
-  public ResponseEntity<String> run(@RequestParam(required=false) String requestId) throws Exception {
+//  @PostMapping("/run/import")
+//  public ResponseEntity<String> run(@RequestParam(required=false) String requestId) throws Exception {
+//    JobParameters params = new JobParametersBuilder()
+//            .addString("requestId", Optional.ofNullable(requestId).orElse(UUID.randomUUID().toString()))
+//            .addLong("time", System.currentTimeMillis()) // 동일 파라미터로 재실행 방지
+//            .toJobParameters();
+//
+//    JobExecution exec = jobLauncher.run(importUserJob, params);
+//    return ResponseEntity.ok("Launched: " + exec.getId());
+//  }
+
+  @PostMapping("/run/create")
+  public ResponseEntity<String> runCreate(@RequestParam(required=false) String requestId) throws Exception {
     JobParameters params = new JobParametersBuilder()
             .addString("requestId", Optional.ofNullable(requestId).orElse(UUID.randomUUID().toString()))
             .addLong("time", System.currentTimeMillis()) // 동일 파라미터로 재실행 방지
             .toJobParameters();
 
-    JobExecution exec = jobLauncher.run(importUserJob, params);
+    JobExecution exec = jobLauncher.run(boardCreateJob, params);
     return ResponseEntity.ok("Launched: " + exec.getId());
   }
 }
