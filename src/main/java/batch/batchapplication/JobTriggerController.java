@@ -35,8 +35,8 @@ public class JobTriggerController {
 //    return ResponseEntity.ok("Launched: " + exec.getId());
 //  }
 
-  @PostMapping("/run/create")
-  public ResponseEntity<String> runCreate(@RequestParam(required=false) String requestId) throws Exception {
+  @PostMapping("/board/create")
+  public ResponseEntity<String> boardCreate(@RequestParam(required=false) String requestId) throws Exception {
     JobParameters params = new JobParametersBuilder()
             .addString("requestId", Optional.ofNullable(requestId).orElse(UUID.randomUUID().toString()))
             .addLong("time", System.currentTimeMillis()) // 동일 파라미터로 재실행 방지
