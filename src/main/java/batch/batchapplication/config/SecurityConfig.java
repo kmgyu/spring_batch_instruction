@@ -28,6 +28,7 @@ public class SecurityConfig {
 //                            .requestMatchers("/posts/[0-9]+").permitAll()  // regex로 숫자로 된 게시글 조회만 허용
                             .requestMatchers("/board/**").permitAll() // batch job
                             .requestMatchers("/board/**").permitAll() // caching test feature
+                            .requestMatchers("/cache/**").permitAll()
                             .requestMatchers("/actuator/**").permitAll()
                             .requestMatchers("/**").authenticated()
                             .anyRequest().authenticated()
