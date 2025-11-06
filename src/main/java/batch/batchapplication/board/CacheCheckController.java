@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 public class CacheCheckController {
-  CacheManager cacheManager;
-
-  @GetMapping("/check")
-  public ResponseEntity<?> printCacheType() {
-    return ResponseEntity.ok("Current CacheManager: " + cacheManager.getClass().getName());
-  }
+//  private final CacheManager cacheManager;
+//
+//  @GetMapping("/check")
+//  public ResponseEntity<?> printCacheType() {
+//    return ResponseEntity.ok("Current CacheManager: " + cacheManager.getClass().getName());
+//  }
 }
