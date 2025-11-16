@@ -1,0 +1,151 @@
+networks:
+  redis-cluster-compose:
+    driver: bridge
+
+services:
+  redis-node-1:
+    container_name: redis-node-1
+    image: redis:latest
+    ports:
+      - 6479:6379
+      - 16479:16379
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-1
+    volumes:
+      - ./data/6479:/redis
+    command: redis-server /redis/redis.conf
+  redis-node-2:
+    container_name: redis-node-2
+    image: redis:latest
+    ports:
+      - 6480:6379
+      - 16480:16379
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-2
+    volumes:
+      - ./data/6480:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-3:
+    container_name: redis-node-3
+    image: redis:latest
+    ports:
+      - 6481:6379
+      - 16481:16379
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-3
+    volumes:
+      - ./data/6481:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-4:
+    container_name: redis-node-4
+    image: redis:latest
+    ports:
+      - 6482:6379
+      - 16482:16379
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-4
+    volumes:
+      - ./data/6482:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-5:
+    container_name: redis-node-5
+    image: redis:latest
+    ports:
+      - 6483:6379
+      - 16483:16379
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-5
+    volumes:
+      - ./data/6483:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-node-6:
+    container_name: redis-node-6
+    image: redis:latest
+    ports:
+      - 6484:6379
+      - 16484:16379
+    networks:
+      - redis-cluster-compose
+    hostname: redis-node-6
+    volumes:
+      - ./data/6484:/redis
+    command: redis-server /redis/redis.conf
+
+  redis-cluster-creator:
+    image: redis:latest
+    ports:
+      - 6999:6999
+    networks:
+      - redis-cluster-compose
+    command: redis-cli -p 6379 -a password --cluster create redis-node-1:6379 redis-node-2:6379 redis-node-3:6379 redis-node-4:6379 redis-node-5:6379 redis-node-6:6379 --cluster-replicas 1 --cluster-yes
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
+
+  redis-insight:
+    image: redislabs/redisinsight
+    ports:
+      - 5540:5540
+    networks:
+      - redis-cluster-compose
+    volumes:
+      - ./data/redisinsight:/db
+    depends_on:
+      - redis-cluster-creator
+      
+  mariadb-node: 
+    container_name: mariadb-node
+    image: mariadb:latest
+    hostname: mariadb-node
+    ports:
+      - 3307:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: '1234' # <-- 여기에 강력한 비밀번호를 입력하세요.
+      # (선택 사항) Spring Backend가 사용할 데이터베이스와 사용자도 미리 만들 수 있습니다.
+      MARIADB_DATABASE: 'batchdb'
+      MARIADB_USER: 'batch_user'
+      MARIADB_PASSWORD: 'batch_pass'
+    # ⬆️ 여기까지 ⬆️
+    networks:
+      - redis-cluster-compose
+    volumes:
+      - ./data/mariadb:/var/lib/mysql # <- 데이터 유지를 위해 볼륨을 연결하는 것이 좋습니다.
+      # ⬇️ 'healthcheck' 섹션 추가
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MARIADB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s # <-- 컨테이너 시작 후 10초 대기 후 healthcheck 시작
+
+  spring-backend:
+    container_name: spring-backend
+    image: kmgyu/spring_batch_instruction:scenario-caching-redis
+    hostname: spring-backend
+    ports:
+      - 8080:8080
+    networks:
+      - redis-cluster-compose
+    # volumes:
+    #   - ./data/backend:/
+    depends_on:
+      - mariadb-node
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
