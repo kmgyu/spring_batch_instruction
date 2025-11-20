@@ -149,3 +149,4 @@ services:
       - redis-node-4
       - redis-node-5
       - redis-node-6
+    restart: on-failure
