@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
   private final BoardRepository boardRepository;
 
-  @Cacheable(value="board", key = "#id")
+  @Cacheable(cacheNames = "boards", key = "#id")
   public BoardResponseDTO findById(Long id) {
     try {
       Thread.sleep(20); // 20ms 대기
