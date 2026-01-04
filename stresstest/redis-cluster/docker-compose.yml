@@ -125,7 +125,7 @@ services:
       - ./data/mariadb:/var/lib/mysql # <- 데이터 유지를 위해 볼륨을 연결하는 것이 좋습니다.
       # ⬇️ 'healthcheck' 섹션 추가
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MARIADB_ROOT_PASSWORD}"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -133,7 +133,10 @@ services:
 
   spring-backend:
     container_name: spring-backend
-    image: kmgyu/spring_batch_instruction:scenario-caching-redis
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    image: spring-backend:local
     hostname: spring-backend
     ports:
       - 8080:8080
