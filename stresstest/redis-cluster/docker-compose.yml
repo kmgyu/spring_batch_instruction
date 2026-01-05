@@ -7,8 +7,8 @@ services:
     container_name: redis-node-1
     image: redis:latest
     ports:
-      - 6479:6379
-      - 16479:16379
+      - 6479:6479
+      - 16479:16479
     networks:
       - redis-cluster-compose
     hostname: redis-node-1
@@ -19,8 +19,8 @@ services:
     container_name: redis-node-2
     image: redis:latest
     ports:
-      - 6480:6379
-      - 16480:16379
+      - 6480:6480
+      - 16480:16480
     networks:
       - redis-cluster-compose
     hostname: redis-node-2
@@ -32,8 +32,8 @@ services:
     container_name: redis-node-3
     image: redis:latest
     ports:
-      - 6481:6379
-      - 16481:16379
+      - 6481:6481
+      - 16481:16481
     networks:
       - redis-cluster-compose
     hostname: redis-node-3
@@ -45,8 +45,8 @@ services:
     container_name: redis-node-4
     image: redis:latest
     ports:
-      - 6482:6379
-      - 16482:16379
+      - 6482:6482
+      - 16482:16482
     networks:
       - redis-cluster-compose
     hostname: redis-node-4
@@ -58,8 +58,8 @@ services:
     container_name: redis-node-5
     image: redis:latest
     ports:
-      - 6483:6379
-      - 16483:16379
+      - 6483:6483
+      - 16483:16483
     networks:
       - redis-cluster-compose
     hostname: redis-node-5
@@ -71,8 +71,8 @@ services:
     container_name: redis-node-6
     image: redis:latest
     ports:
-      - 6484:6379
-      - 16484:16379
+      - 6484:6484
+      - 16484:16484
     networks:
       - redis-cluster-compose
     hostname: redis-node-6
@@ -86,7 +86,7 @@ services:
       - 6999:6999
     networks:
       - redis-cluster-compose
-    command: redis-cli -p 6379 -a password --cluster create redis-node-1:6379 redis-node-2:6379 redis-node-3:6379 redis-node-4:6379 redis-node-5:6379 redis-node-6:6379 --cluster-replicas 1 --cluster-yes
+    command: redis-cli -p 6379 -a password --cluster create redis-node-1:6479 redis-node-2:6480 redis-node-3:6481 redis-node-4:6482 redis-node-5:6483 redis-node-6:6484 --cluster-replicas 1 --cluster-yes
     depends_on:
       - redis-node-1
       - redis-node-2
